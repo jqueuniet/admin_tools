@@ -36,8 +36,7 @@ def parse_certificate(certificate_path):
     # Extract SubjectAltName
     for extension in core['extensions']:
         if extension['extnID'] == rfc2459.id_ce_subjectAltName:
-            octet_string = decoder.decode(extension.getComponentByName('extnValue'), asn1Spec=OctetString())[0]
-            (san_list, r) = decoder.decode(octet_string, rfc2459.SubjectAltName())
+            (san_list, r) = decoder.decode(extension.getComponentByName('extnValue'), rfc2459.SubjectAltName())
             for san_struct in san_list:
                 if san_struct.getName() == 'dNSName':
                     fqdns.add(str(san_struct.getComponent()))
